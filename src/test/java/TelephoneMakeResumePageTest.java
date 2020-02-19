@@ -40,20 +40,18 @@ public class TelephoneMakeResumePageTest {
     }*/
 
     @Test
-    public void letterInTelephoneError() {
-        makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
+    public void letterTelephoneError() {
         makeresumepage.typeTelephone("Test");
+        makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = true;
         assertEquals(expected,actual);
     }
 
     @Test
-    public void letterWithNumberInTelephoneError() {
-        makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
+    public void letterWithNumberTelephoneError() {
         makeresumepage.typeTelephone("Test12");
+        makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = true;
         assertEquals(expected,actual);
@@ -61,19 +59,17 @@ public class TelephoneMakeResumePageTest {
 
     @Test
     public void ShortTelephoneError() {
-        makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
         makeresumepage.typeTelephone("12");
+        makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = true;
         assertEquals(expected,actual);
     }
 
     @Test
-    public void LittleTelephoneError() {
+    public void LessTelephoneError() {
+        makeresumepage.typeTelephone("712");
         makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
-        makeresumepage.typeTelephone("+712");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = true;
         assertEquals(expected,actual);
@@ -81,9 +77,8 @@ public class TelephoneMakeResumePageTest {
 
     @Test
     public void withoutTelephoneError() {
+        makeresumepage.typeTelephone("9345678901");
         makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
-        makeresumepage.typeTelephone("+12345678901");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = false;
         assertEquals(expected,actual);
@@ -91,9 +86,8 @@ public class TelephoneMakeResumePageTest {
 
     @Test
     public void longTelephoneError() {
+        makeresumepage.typeTelephone("23456789012");
         makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
-        makeresumepage.typeTelephone("+123456789012");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = true;
         assertEquals(expected,actual);
@@ -101,9 +95,8 @@ public class TelephoneMakeResumePageTest {
 
     @Test
     public void tooLongTelephoneError() {
+        makeresumepage.typeTelephone("1234567890123456789");
         makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
-        makeresumepage.typeTelephone("+1234567890123456789");
         boolean actual = makeresumepage.isSearchErrorTelephone();
         boolean expected = true;
         assertEquals(expected,actual);

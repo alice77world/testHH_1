@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
-public class CityMakeResumePageTest {
+public class MonthMakeResumePageTest {
     private static MakeResumePage makeresumepage;
     public WebDriver driver;
 
@@ -32,6 +32,9 @@ public class CityMakeResumePageTest {
         makeresumepage.clearFieldSurname();
         makeresumepage.clearFieldTelephone();
         makeresumepage.clearFieldCity();
+        makeresumepage.clearFieldDay();
+        makeresumepage.clearSelectMonth();
+        makeresumepage.clearFieldYear();
     }
 
     /*@AfterClass
@@ -40,23 +43,23 @@ public class CityMakeResumePageTest {
     }*/
 
     @Test
-    public void withoutCityError() {
-        makeresumepage.typeCity("Омск"); //не получилось выбрать из списка
+    public void withoutMonthError() {
+        makeresumepage.typeDay("12"); //нужно заполнить месяц и год
+        makeresumepage.selectMonth("марта");
+        makeresumepage.typeYear("1997");
         makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
-        makeresumepage.typeTelephone("9345678901");
-        boolean actual = makeresumepage.isSearchErrorEmptyField();
+        boolean actual = makeresumepage.isSearchErrorDate();
         boolean expected = false;
         assertEquals(expected,actual);
     }
 
     @Test
-    public void enterCityError() {
-        makeresumepage.typeCity("\n");
+    public void withMonthError() {
+        makeresumepage.typeDay("12"); //нужно заполнить месяц и год
+        makeresumepage.selectMonth("");
+        makeresumepage.typeYear("1997");
         makeresumepage.typeName("Иван");
-        makeresumepage.typeSurname("Иванов");
-        makeresumepage.typeTelephone("9345678901");
-        boolean actual = makeresumepage.isSearchErrorEmptyField();
+        boolean actual = makeresumepage.isSearchErrorDate();
         boolean expected = true;
         assertEquals(expected,actual);
     }

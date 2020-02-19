@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
-public class DayMakeResumePageTest {
+public class YearMakeResumePageTest {
     private static MakeResumePage makeresumepage;
     public WebDriver driver;
 
@@ -43,10 +43,10 @@ public class DayMakeResumePageTest {
     }*/
 
     @Test
-    public void tooBigDayError() {
-        makeresumepage.typeDay("123"); //нужно заполнить месяц и год
+    public void littleNumberYearError() {
+        makeresumepage.typeDay("12"); //нужно заполнить месяц и год
         makeresumepage.selectMonth("марта");
-        makeresumepage.typeYear("1997");
+        makeresumepage.typeYear("12");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();
         boolean expected = true;
@@ -54,14 +54,46 @@ public class DayMakeResumePageTest {
     }
 
     @Test
-    public void withoutDayError() {
+    public void withoutError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
         makeresumepage.selectMonth("марта");
-        makeresumepage.typeYear("1997");
+        makeresumepage.typeYear("1900");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();
         boolean expected = false;
         assertEquals(expected,actual);
     }
 
+    @Test
+    public void tooEarlyError() {
+        makeresumepage.typeDay("12"); //нужно заполнить месяц и год
+        makeresumepage.selectMonth("марта");
+        makeresumepage.typeYear("1899");
+        makeresumepage.typeName("Иван");
+        boolean actual = makeresumepage.isSearchErrorEarlyDate();
+        boolean expected = true;
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void withoutError2() {
+        makeresumepage.typeDay("12"); //нужно заполнить месяц и год
+        makeresumepage.selectMonth("марта");
+        makeresumepage.typeYear("2005");
+        makeresumepage.typeName("Иван");
+        boolean actual = makeresumepage.isSearchErrorDate();
+        boolean expected = true;
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void tooYoungError() {
+        makeresumepage.typeDay("12"); //нужно заполнить месяц и год
+        makeresumepage.selectMonth("марта");
+        makeresumepage.typeYear("2006");
+        makeresumepage.typeName("Иван");
+        boolean actual = makeresumepage.isSearchErrorEarlyDate();
+        boolean expected = true;
+        assertEquals(expected,actual);
+    }
 }
