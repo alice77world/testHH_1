@@ -1,8 +1,6 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static org.openqa.selenium.By.linkText;
-
 public class HomePage {
     private final WebDriver driver;
 

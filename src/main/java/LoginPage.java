@@ -1,6 +1,8 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.concurrent.TimeUnit;
+
 public class LoginPage {
     private final WebDriver driver;
 
@@ -13,16 +15,19 @@ public class LoginPage {
     By loginButtonLocator = By.xpath("//input[@type='submit']");
 
     public LoginPage typeUsername(String username) {
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.findElement(usernameLocator).sendKeys(username);
         return this;
     }
 
     public LoginPage typePassword(String password) {
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.findElement(passwordLocator).sendKeys(password);
         return this;
     }
 
     public HomePage submitLogin() {
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.findElement(loginButtonLocator).submit();
         return new HomePage(driver);
     }
