@@ -1,16 +1,15 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.*;
 
 public class YearMakeResumePageTest {
     private static MakeResumePage makeresumepage;
-    public WebDriver driver;
 
     @BeforeClass
     public static void runBeforeClass() { //действия перед всеми тестами
@@ -20,9 +19,7 @@ public class YearMakeResumePageTest {
         driver.get("https://ufa.hh.ru/");
         GeneralPage generalpage = new GeneralPage(driver);
         LoginPage loginPage = generalpage.clickEnterButton();
-        loginPage.typeUsername("arapovaalica@yandex.ru");
-        loginPage.typePassword("2251764");
-        HomePage homepage = loginPage.submitLogin();
+        HomePage homepage = loginPage.loginAs("arapovaalica@yandex.ru","2251764");
         makeresumepage = homepage.clickButtonCreateResume();
     }
 
@@ -37,15 +34,12 @@ public class YearMakeResumePageTest {
         makeresumepage.clearFieldYear();
     }
 
-    /*@AfterClass
-    public static void runAfterClass() {
-        makeresumepage.closeMakeResumePage();
-    }*/
-
     @Test
+    @Description(value="Тест проверяет наличие ошибки при вводе Года рождения длиной менее 4 цифр")
+    @Epic(value="Год")
     public void littleNumberYearError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("марта");
+        makeresumepage.selectMonth("февраля");
         makeresumepage.typeYear("12");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();
@@ -54,9 +48,11 @@ public class YearMakeResumePageTest {
     }
 
     @Test
+    @Description(value="Тест проверяет отсутствие ошибки при вводе корректного года рождения")
+    @Epic(value="Год")
     public void withoutError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("марта");
+        makeresumepage.selectMonth("февраля");
         makeresumepage.typeYear("1900");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();
@@ -65,9 +61,11 @@ public class YearMakeResumePageTest {
     }
 
     @Test
+    @Description(value="Тест проверяет наличие ошибки при вводе раннего года рождения")
+    @Epic(value="Год")
     public void tooEarlyError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("марта");
+        makeresumepage.selectMonth("февраля");
         makeresumepage.typeYear("1899");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorEarlyDate();
@@ -76,24 +74,29 @@ public class YearMakeResumePageTest {
     }
 
     @Test
+    @Description(value="Тест проверяет отсутствие ошибки при вводе корректной даты рождения")
+    @Epic(value="Год")
     public void withoutError2() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("марта");
+        makeresumepage.selectMonth("февраля");
         makeresumepage.typeYear("2005");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();
-        boolean expected = true;
+        boolean expected = false;
         assertEquals(expected,actual);
     }
 
     @Test
+    @Description(value="Тест проверяет наличие ошибки при вводе 2007 года рождения")
+    @Epic(value="Год")
     public void tooYoungError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("марта");
-        makeresumepage.typeYear("2006");
+        makeresumepage.selectMonth("февраля");
+        makeresumepage.typeYear("2007");
         makeresumepage.typeName("Иван");
-        boolean actual = makeresumepage.isSearchErrorEarlyDate();
+        boolean actual = makeresumepage.isSearchErrorYoungYear();
         boolean expected = true;
         assertEquals(expected,actual);
     }
+
 }

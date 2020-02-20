@@ -11,7 +11,7 @@ public class HomePage {
 
     By createResumeLocator = By.linkText("Создать резюме");
 
-    @Step
+    @Step("Нажатие на кнопку Создать резюме")
     public MakeResumePage clickButtonCreateResume() {
         driver.findElement(createResumeLocator).click();
         return new MakeResumePage(driver);

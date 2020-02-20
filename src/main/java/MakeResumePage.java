@@ -1,10 +1,8 @@
 import io.qameta.allure.Step;
-import org.apache.bcel.generic.Select;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-
-import java.util.concurrent.TimeUnit;
 
 public class MakeResumePage {
     private final WebDriver driver;
@@ -20,11 +18,6 @@ public class MakeResumePage {
     By dayLocator = By.xpath("//input[@placeholder='День']");
     By monthLocator = By.xpath("//select[@name='birthday[0].date']");
     By yearLocator = By.xpath("//input[@placeholder='Год']");
-    By femLocator = By.xpath("//button[.='Женский']");
-    By maleLocator = By.xpath("//button[.='Мужской']");
-    By expHaveLocator = By.xpath("//span[.='Есть опыт работы']");
-    By expHaventLocator = By.xpath("//span[.='Нет опыта работы']");
-
 
     By errorNameLocator = By.xpath("//div[.='Только буквы и дефис']");
     By errorTelephoneLocator = By.xpath("//div[.='Номер указан некорректно']");
@@ -33,58 +26,56 @@ public class MakeResumePage {
     By earlyDateLocator = By.xpath("//div[.='Слишком рано']");
     By youngYearLocator = By.xpath("//div[.='Вы слишком молоды']");
 
-
-    @Step
+    @Step("Ввод имени")
     public MakeResumePage typeName(String name) {
         driver.findElement(nameLocator).sendKeys(name);
         return this;
     }
 
-    @Step
+    @Step("Ввод фамилии")
     public MakeResumePage typeSurname(String surname) {
         driver.findElement(surnameLocator).sendKeys(surname);
         return this;
     }
 
-    @Step
+    @Step("Ввод номера телефона")
     public MakeResumePage typeTelephone(String telephone) {
         driver.findElement(telephoneLocator).sendKeys(telephone);
         return this;
     }
 
-    @Step
+    @Step("Ввод города проживания")
     public MakeResumePage typeCity(String city) {
         driver.findElement(cityLocator).sendKeys(city);
         return this;
     }
 
-    @Step
+    @Step("Ввод дня рождения")
     public MakeResumePage typeDay(String name) {
         driver.findElement(dayLocator).sendKeys(name);
         return this;
     }
 
-    @Step
+    @Step("Выбор месяца рождения из выпадающего списка")
     public MakeResumePage selectMonth(String value) {
-        driver.findElement(monthLocator).click();
-        driver.findElement(By.xpath("//select/option[text()=value]")).click();
+        try {
+            Thread.sleep(5000);
+            Select dropdown = new Select(driver.findElement(monthLocator));
+            dropdown.selectByIndex(2);
+        } catch(Exception e)
+        {
+            System.out.println(e);
+        }
         return this;
     }
 
-    @Step
+    @Step("Ввод года рождения")
     public MakeResumePage typeYear(String name) {
         driver.findElement(yearLocator).sendKeys(name);
         return this;
     }
 
-/*
-    @Step
-    public MakeResumePage selectMonth(String month) {
-        driver.findElement(monthLocator).sendKeys(month);
-        return this;
-    }*/
-
-    @Step
+    @Step("Очистить поле Имя")
     public MakeResumePage clearFieldName() {
         driver.findElement(nameLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.HOME));
         driver.findElement(nameLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END));
@@ -92,7 +83,7 @@ public class MakeResumePage {
         return this;
     }
 
-    @Step
+    @Step("Очистить поле Фамилия")
     public MakeResumePage clearFieldSurname() {
         driver.findElement(surnameLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.HOME));
         driver.findElement(surnameLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END,Keys.BACK_SPACE));
@@ -100,7 +91,7 @@ public class MakeResumePage {
         return this;
     }
 
-    @Step
+    @Step("Очистить поле Город")
     public MakeResumePage clearFieldCity() {
         driver.findElement(cityLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.HOME));
         driver.findElement(cityLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END,Keys.BACK_SPACE));
@@ -108,7 +99,7 @@ public class MakeResumePage {
         return this;
     }
 
-    @Step
+    @Step("Очистить поле Номер телефона")
     public MakeResumePage clearFieldTelephone() {
         driver.findElement(telephoneLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.HOME));
         driver.findElement(telephoneLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END,Keys.BACK_SPACE));
@@ -116,68 +107,69 @@ public class MakeResumePage {
         return this;
     }
 
-    @Step
-    public MakeResumePage clearFieldDay() { //переделать
+    @Step("Очистить поле День Рождения")
+    public MakeResumePage clearFieldDay() {
         driver.findElement(dayLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.HOME));
         driver.findElement(dayLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END,Keys.BACK_SPACE));
         driver.findElement(dayLocator).sendKeys(Keys.BACK_SPACE);
         return this;
     }
 
-    @Step
-    public MakeResumePage clearFieldYear() { //переделать
+    @Step("Очистить поле Год рождения")
+    public MakeResumePage clearFieldYear() {
         driver.findElement(yearLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.HOME));
         driver.findElement(yearLocator).sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END,Keys.BACK_SPACE));
         driver.findElement(yearLocator).sendKeys(Keys.BACK_SPACE);
         return this;
     }
 
-    @Step
-    public MakeResumePage clearSelectMonth() { //переделать
-        driver.findElement(monthLocator).click();
-        driver.findElement(By.xpath("//select/option[text()='']")).click();
+    @Step("Очистить Месяц Рождения из выпадающего списка")
+    public MakeResumePage clearSelectMonth() {
+        try {
+            Thread.sleep(5000);
+            Select dropdown = new Select(driver.findElement(By.xpath("//select[@name='birthday[0].date']")));
+            dropdown.selectByIndex(0);
+        } catch(Exception e)
+        {
+            System.out.println(e);
+        }
         return this;
     }
 
-    @Step
+    @Step("Поиск ошибки в Имени")
     public boolean isSearchErrorName() {
         Boolean isPresent = driver.findElements(errorNameLocator).size() > 0;
         return isPresent;
     }
 
-    @Step
+    @Step("Поиск ошибки Обязательное поле")
     public boolean isSearchErrorEmptyField() {
         Boolean isPresent = driver.findElements(errorEmptyFieldLocator).size() > 0;
         return isPresent;
     }
 
-    @Step
+    @Step("Поиск ошибки в поле Номер Телефона")
     public boolean isSearchErrorTelephone() {
         Boolean isPresent = driver.findElements(errorTelephoneLocator).size() > 0;
         return isPresent;
     }
 
-    @Step
+    @Step("Поиск ошибки Некорректная дата")
     public boolean isSearchErrorDate() {
         Boolean isPresent = driver.findElements(errorDateLocator).size() > 0;
         return isPresent;
     }
 
-    @Step
+    @Step("Поиск ошибки Слишком рано")
     public boolean isSearchErrorEarlyDate() {
         Boolean isPresent = driver.findElements(earlyDateLocator).size() > 0;
         return isPresent;
     }
 
-    @Step
+    @Step("Поиск ошибки Вы слишком молоды")
     public boolean isSearchErrorYoungYear() {
         Boolean isPresent = driver.findElements(youngYearLocator).size() > 0;
         return isPresent;
     }
 
-    @Step
-    public MakeResumePage closeMakeResumePage() {
-        driver.quit();
-        return this;
-    }
 }

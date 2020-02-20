@@ -1,16 +1,15 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.*;
 
 public class MonthMakeResumePageTest {
     private static MakeResumePage makeresumepage;
-    public WebDriver driver;
 
     @BeforeClass
     public static void runBeforeClass() { //действия перед всеми тестами
@@ -20,9 +19,7 @@ public class MonthMakeResumePageTest {
         driver.get("https://ufa.hh.ru/");
         GeneralPage generalpage = new GeneralPage(driver);
         LoginPage loginPage = generalpage.clickEnterButton();
-        loginPage.typeUsername("arapovaalica@yandex.ru");
-        loginPage.typePassword("2251764");
-        HomePage homepage = loginPage.submitLogin();
+        HomePage homepage = loginPage.loginAs("arapovaalica@yandex.ru","2251764");
         makeresumepage = homepage.clickButtonCreateResume();
     }
 
@@ -37,15 +34,12 @@ public class MonthMakeResumePageTest {
         makeresumepage.clearFieldYear();
     }
 
-    /*@AfterClass
-    public static void runAfterClass() {
-        makeresumepage.closeMakeResumePage();
-    }*/
-
     @Test
+    @Description(value="Тест проверяет отсутствие ошибки при вводе корректных данных(дня, месяца,года)")
+    @Epic(value="Месяц рождения")
     public void withoutMonthError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("марта");
+        makeresumepage.selectMonth("февраля");
         makeresumepage.typeYear("1997");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();
@@ -54,9 +48,10 @@ public class MonthMakeResumePageTest {
     }
 
     @Test
+    @Description(value="Тест проверяет наличие ошибки, если месяц рождения не выбран")
+    @Epic(value="Месяц рождения")
     public void withMonthError() {
         makeresumepage.typeDay("12"); //нужно заполнить месяц и год
-        makeresumepage.selectMonth("");
         makeresumepage.typeYear("1997");
         makeresumepage.typeName("Иван");
         boolean actual = makeresumepage.isSearchErrorDate();

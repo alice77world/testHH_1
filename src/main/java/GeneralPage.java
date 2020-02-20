@@ -11,7 +11,7 @@ public class GeneralPage {
 
     By linkEnterLocator = By.linkText("Войти");
 
-    @Step
+    @Step("Нажатие на кнопку Войти")
     public LoginPage clickEnterButton(){
         driver.findElement(linkEnterLocator).click();
         return new LoginPage(driver);

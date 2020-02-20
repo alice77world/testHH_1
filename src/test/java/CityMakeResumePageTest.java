@@ -1,16 +1,15 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.*;
 
 public class CityMakeResumePageTest {
     private static MakeResumePage makeresumepage;
-    public WebDriver driver;
 
     @BeforeClass
     public static void runBeforeClass() { //действия перед всеми тестами
@@ -20,9 +19,7 @@ public class CityMakeResumePageTest {
         driver.get("https://ufa.hh.ru/");
         GeneralPage generalpage = new GeneralPage(driver);
         LoginPage loginPage = generalpage.clickEnterButton();
-        loginPage.typeUsername("arapovaalica@yandex.ru");
-        loginPage.typePassword("2251764");
-        HomePage homepage = loginPage.submitLogin();
+        HomePage homepage = loginPage.loginAs("arapovaalica@yandex.ru","2251764");
         makeresumepage = homepage.clickButtonCreateResume();
     }
 
@@ -34,12 +31,9 @@ public class CityMakeResumePageTest {
         makeresumepage.clearFieldCity();
     }
 
-    /*@AfterClass
-    public static void runAfterClass() {
-        makeresumepage.closeMakeResumePage();
-    }*/
-
     @Test
+    @Description(value="Тест проверяет отсутствие ошибки при вводе корректных данных")
+    @Epic(value="Город")
     public void withoutCityError() {
         makeresumepage.typeCity("Омск"); //не получилось выбрать из списка
         makeresumepage.typeName("Иван");
@@ -51,6 +45,8 @@ public class CityMakeResumePageTest {
     }
 
     @Test
+    @Description(value="Тест проверяет наличие ошибки при вводе Enter")
+    @Epic(value="Город")
     public void enterCityError() {
         makeresumepage.typeCity("\n");
         makeresumepage.typeName("Иван");

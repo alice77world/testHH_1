@@ -2,8 +2,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.concurrent.TimeUnit;
-
 public class LoginPage {
     private final WebDriver driver;
 
@@ -15,31 +13,29 @@ public class LoginPage {
     By passwordLocator = By.xpath("//input[@name='password']");
     By loginButtonLocator = By.xpath("//input[@type='submit']");
 
-    @Step
-    public LoginPage typeUsername(String username) {
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    @Step("Ввод логина")
+    private LoginPage typeUsername(String username) {
         driver.findElement(usernameLocator).sendKeys(username);
         return this;
     }
 
-    @Step
-    public LoginPage typePassword(String password) {
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    @Step("Ввод пароля")
+    private LoginPage typePassword(String password) {
         driver.findElement(passwordLocator).sendKeys(password);
         return this;
     }
 
-    @Step
-    public HomePage submitLogin() {
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    @Step("Нажатие на кнопку Войти в личный кабинет")
+    private HomePage submitLogin() {
         driver.findElement(loginButtonLocator).submit();
         return new HomePage(driver);
     }
 
-    @Step
+    @Step("Ввод логина и пароля, нажатие на кнопку Войти в личный кабинет")
     public HomePage loginAs(String username, String password) {
         typeUsername(username);
         typePassword(password);
         return submitLogin();
     }
+
 }

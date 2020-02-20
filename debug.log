@@ -1,3 +1,4 @@
 [0214/133057.447:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Канал был закрыт. (0x6D)
 [0217/190147.891:ERROR:crashpad_client_win.cc(505)] CreateProcess: Отказано в доступе. (0x5)
 [0217/190202.062:ERROR:crashpad_client_win.cc(505)] CreateProcess: Отказано в доступе. (0x5)
+[0220/215202.717:ERROR:crashpad_client_win.cc(505)] CreateProcess: Отказано в доступе. (0x5)
